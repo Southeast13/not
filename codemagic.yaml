@@ -1,24 +1,25 @@
 workflows:
   android-debug:
     name: Android Debug Build
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m1  # Или mac_mini_m2 для быстрее
     max_build_duration: 60
-    environment:
-      groups:
-        - android_signing
     scripts:
-      - name: Set up Java
+      - name: Set Android SDK location
         script: |
-          echo "y" | sdkmanager --licenses
-          sdkmanager "platforms;android-34"
-          sdkmanager "build-tools;34.0.0"
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Accept Android SDK licenses
+        script: |
+          chmod +x ./gradlew
+          yes | ./gradlew acceptAndroidSdkLicenses
       - name: Assemble Debug APK
         script: |
-          cd android
           ./gradlew assembleDebug
     artifacts:
-      - android/app/build/outputs/apk/debug/*.apk
+      - app/build/outputs/apk/debug/*.apk
     publishing:
       email:
         recipients:
-          - your.email@example.com
+          - bryj60@gmail.com  # Твой email
+        notify:
+          success: true
+          failure: true
