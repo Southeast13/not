@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- TODO: Use <exclude domain="file" path="cachePath1"/> to skip hiding
+         your app's cache -->
+    <!-- If a key/value pair is persistent now, it will remain so in the full-backup -->
+    <include domain="sharedpref" path="."/>
+</full-backup-content>

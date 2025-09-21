@@ -1,0 +1,24 @@
+workflows:
+  android-debug:
+    name: Android Debug Build
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      groups:
+        - android_signing
+    scripts:
+      - name: Set up Java
+        script: |
+          echo "y" | sdkmanager --licenses
+          sdkmanager "platforms;android-34"
+          sdkmanager "build-tools;34.0.0"
+      - name: Assemble Debug APK
+        script: |
+          cd android
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/debug/*.apk
+    publishing:
+      email:
+        recipients:
+          - your.email@example.com
